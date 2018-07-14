@@ -1,0 +1,9 @@
+void menu();
+int get_user_option();
+void exec_option(int);
+void new_acc();
+void edit();
+void transact();
+void see();
+void erase();
+void quit();
