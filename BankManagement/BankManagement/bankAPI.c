@@ -1,11 +1,12 @@
-// messages strings
+#include <stdio.h>
+#include "bankAPI.h"
+
+// menu messages
 const char* new_acc_str = "Create new account";
 const char* edit_str = "Upadate information of existing account";
 const char* transact_str = "For trasactions";
 const char* see_str = "Check the details of an existing account";
 const char* erase_str = "Removing existing account";
-const char* invaild_input_str = "Error: Invaild Input!";
-const char* again_str = "Try again";
 const char* quit_str = "Exit";
 const char* welcome_str = "Welcome to the main menu";
 
@@ -22,7 +23,15 @@ void menu()
 
 void new_acc()
 {
-	printf("ACCOUNT MADE!\n");
+	FILE *f = fopen("C:\\Users\\Tal_S\\Desktop\\Workspace\\Bank-Management\\BankManagement\\BankUserData\\account.txt", "a");
+	if (f != NULL)
+	{
+		 print_and_scan_new_acc_messages();
+		 write_data_to_file();
+	}
+	else {
+		printf("Error: cannot open file!\n");
+	}
 }
 
 void edit()
@@ -47,5 +56,5 @@ void erase()
 
 void quit()
 {
-
+	printf("");
 }
