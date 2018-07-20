@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include "bankAPI.h"
+FILE *userdata_file;
+Userdata* print_and_scan_new_acc_messages();
+void write_data_to_file(Userdata*);
 
 // menu messages
 const char* new_acc_str = "Create new account";
@@ -20,6 +23,8 @@ const char* money_str = "If you want to deposit money now, type 1, else type 0: 
 const char* amount_of_money_str = "Enter the amount of money to deposit: ";
 const char* succses_str = "The money were deposited succesfuly!\n";
 const char* goodbye_str = "Have a great day sir!\n";
+const char* write_format = "name: %s\nage: %d\nid: %d\nphone number: %d\naddress: %s";
+
 
 void menu()
 {
@@ -32,15 +37,15 @@ void menu()
 	printf("6. %s\n", quit_str); // quit
 }
 
-void new_acc()
-{   // (!)change the absolute path(!)
-	FILE *userdata_file = fopen("C:\\Users\\Tal_S\\Desktop\\Workspace\\Bank-Management\\BankManagement\\BankUserData\\account.txt", "a");
+void new_acc() // needs to get the person data
+{
+	userdata_file = fopen("..//BankUserData//userID.txt", "a");
 	if (userdata_file != NULL)
 	{
-		Userdata *p = print_and_scan_new_acc_messages();
-		write_data_to_file(p);
+		Userdata *person = print_and_scan_new_acc_messages();
+		write_data_to_file(person);
 	}
-	else 
+	else
 	{
 		printf("Error: cannot open file!\n");
 	}
@@ -68,38 +73,57 @@ void erase()
 
 void quit()
 {
-	printf("");
+	
 }
 
 static Userdata *print_and_scan_new_acc_messages()
 {
-	Userdata *person = (Userdata*) malloc(sizeof(Userdata));
+	Userdata *person = (Userdata*)malloc(sizeof(Userdata));
 	printf(name_str);
-	scanf("%s", &person->name);
+	read_line(person->name, strlen(person->name), stdin);
 	printf(age_str);
-	scanf("%d", &person->age);
+	read_int(&person->age);
 	printf(id_str);
-	scanf("%d", &person->id);
+	read_int(&person->id);
 	printf(phone_number_str);
-	scanf("%d", &person->phone_number);
+	read_int(&person->phone_number);
 	printf(address_str);
-	scanf("%s", &person->address);
+	read_line(person->address, strlen(person->address), stdin);
 	printf(money_str);
 	person->money = 0;
 	int ans;
-	scanf("%d", &ans);
+	read_int(&ans);
 	if (ans == 1)
 	{
 		printf(amount_of_money_str);
-		scanf("%d", &person->money);
+		read_int(&person->money);
 		printf(succses_str);
 	}
 	printf(goodbye_str);
 	return person;
 }
 
-static void write_data_to_file(Userdata *p) //works
+static void write_data_to_file(Userdata *person)
 {
-	printf("%s\n", p->name);
-	//transfer data to file
-} 
+	fprintf(userdata_file, write_format, person->name, person->age, person->id, person->phone_number, person->address);
+	fclose(userdata_file);
+}
+
+// fgets without reading newline character
+static char *read_line(char *str, int n, FILE *stream)
+{
+	char *ans = fgets(str, n, stream);
+	if (ans == NULL)
+		return NULL;
+	int newlineIndex = strcspn(str, "\n");
+	str[newlineIndex] = 0;
+	return str;
+}
+
+
+static int read_int(int *num)
+{
+	scanf("%d", num);
+	char c = getchar(); // remove newline from stdin
+	return *num;
+}

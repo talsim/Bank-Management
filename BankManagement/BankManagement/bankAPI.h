@@ -17,7 +17,5 @@ void transact();
 void see();
 void erase();
 void quit();
-Userdata* print_and_scan_new_acc_messages();
-void write_data_to_file(Userdata*);
-
-
+char *read_line(char *str, int n, FILE *stream);
+int read_int(int *num);

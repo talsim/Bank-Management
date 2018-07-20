@@ -7,17 +7,19 @@ const char* again_str = "Try again";
 
 
 int main()
-{
+{	
 	menu();
 	int option = get_user_option();
 	exec_option(option);
-	return 0;
+ 	return 0;
+
 }					
 
 static int get_user_option()
 {
 	int user_ans = 0;
 	scanf("%d", &user_ans);
+	char c = getchar();
 	return user_ans;
 }
 

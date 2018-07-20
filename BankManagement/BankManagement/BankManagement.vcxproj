@@ -120,7 +120,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="bank.c" />
-    <ClCompile Include="bankAPI.c" />
+    <ClCompile Include="bankAPI.c">
+      <FileType>CCode</FileType>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bankAPI.h" />
