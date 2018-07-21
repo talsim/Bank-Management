@@ -52,10 +52,13 @@ void see()
 
 void erase()
 {
-
+	int user_id;
+	printf("Please enter your id: ");
+	read_int(&user_id);
+	remove_file(user_id);
 }
 
 void quit()
 {
-	
+	exit(0);
 }

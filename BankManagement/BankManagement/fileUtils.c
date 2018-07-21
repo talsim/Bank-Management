@@ -4,6 +4,7 @@
 
 #define PATH_LEN 100
 #define ID_LEN 20
+const char path[PATH_LEN] = "..//BankUserData//";
 
 static void build_path(int, char*);
 
@@ -11,7 +12,6 @@ const char* write_format = "name: %s\nage: %d\nid: %d\nphone number: %d\naddress
 
 void write_data_to_file(Userdata *person)
 {
-	char path[PATH_LEN] = "..//BankUserData//";
 	build_path(person->id, path);
 	FILE *userdata_file = fopen(path, "a");
 	if (userdata_file != NULL) {
@@ -20,6 +20,16 @@ void write_data_to_file(Userdata *person)
 	}
 	else
 		printf("Error: cannot open file!\n");
+}
+
+void remove_file(int person_id)
+{
+	build_path(person_id, path);
+	int status = remove(path);
+	if (status == 0) 
+		printf("The user with the id %d was successfuly removed!\n", person_id);
+	else 
+		printf("Error: cannot remove the user %d\n", person_id);
 }
 
 static void build_path(int user_id, char *path)
