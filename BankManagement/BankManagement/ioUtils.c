@@ -56,6 +56,5 @@ Userdata *print_and_scan_new_acc_messages()
 		printf(succses_str);
 	}
 	printf(goodbye_str);
-	free(person);
 	return person;
 }
