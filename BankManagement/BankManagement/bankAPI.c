@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "bankAPI.h"
+#include "userdata.h"
+
 FILE *userdata_file;
 Userdata* print_and_scan_new_acc_messages();
 void write_data_to_file(Userdata*);
@@ -107,23 +109,4 @@ static void write_data_to_file(Userdata *person)
 {
 	fprintf(userdata_file, write_format, person->name, person->age, person->id, person->phone_number, person->address);
 	fclose(userdata_file);
-}
-
-// fgets without reading newline character
-static char *read_line(char *str, int n, FILE *stream)
-{
-	char *ans = fgets(str, n, stream);
-	if (ans == NULL)
-		return NULL;
-	int newlineIndex = strcspn(str, "\n");
-	str[newlineIndex] = 0;
-	return str;
-}
-
-
-static int read_int(int *num)
-{
-	scanf("%d", num);
-	char c = getchar(); // remove newline from stdin
-	return *num;
 }
