@@ -1,3 +1,6 @@
+#ifndef USERDATA_H
+#define USERDATA_H
+
 typedef struct
 {
 	char name[20];
@@ -7,3 +10,6 @@ typedef struct
 	int phone_number;
 	char address[20];
 } Userdata;
+
+#endif
+
