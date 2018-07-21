@@ -21,9 +21,24 @@
     <ClCompile Include="bank.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ioUtils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fileUtils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bankAPI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="userdata.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ioUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fileUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

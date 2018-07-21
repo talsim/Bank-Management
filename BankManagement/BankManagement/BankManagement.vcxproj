@@ -123,9 +123,14 @@
     <ClCompile Include="bankAPI.c">
       <FileType>CCode</FileType>
     </ClCompile>
+    <ClCompile Include="fileUtils.c" />
+    <ClCompile Include="ioUtils.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bankAPI.h" />
+    <ClInclude Include="fileUtils.h" />
+    <ClInclude Include="ioUtils.h" />
+    <ClInclude Include="userdata.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

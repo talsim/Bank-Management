@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include "bankAPI.h"
 
+int get_user_option();
+void exec_option(int);
+
 // menu messages
 const char* invaild_input_str = "Error: Invaild Input!";
 const char* again_str = "Try again";
@@ -18,8 +21,7 @@ int main()
 static int get_user_option()
 {
 	int user_ans = 0;
-	scanf("%d", &user_ans);
-	char c = getchar();
+	read_int(&user_ans);
 	return user_ans;
 }
 
