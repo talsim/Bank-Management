@@ -16,8 +16,6 @@ const char* quit_str = "Exit";
 const char* welcome_str = "Welcome to the main menu";
 
 
-
-
 void menu()
 {
 	printf("\t\t\t\t\t%s\n\n\n\n", welcome_str);
@@ -29,7 +27,7 @@ void menu()
 	printf("6. %s\n", quit_str); // quit
 }
 
-void new_acc() 
+void new_acc()
 {
 	Userdata *person = print_and_scan_new_acc_messages();
 	write_data_to_file(person);
@@ -47,7 +45,10 @@ void transact()
 
 void see()
 {
-
+	int user_id;
+	printf("Please enter the account's id: ");
+	read_int(&user_id);
+	show_file(user_id);
 }
 
 void erase()
