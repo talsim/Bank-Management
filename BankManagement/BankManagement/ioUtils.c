@@ -10,8 +10,6 @@ const char* phone_number_str = "Please enter your phone number: ";
 const char* address_str = "Please enter your address: ";
 const char* money_str = "If you want to deposit money now, type 1, else type 0: ";
 const char* amount_of_money_str = "Enter the amount of money to deposit: ";
-const char* succses_str = "The money were deposited succesfuly!\n";
-const char* goodbye_str = "Have a great day sir!\n";
 
 // fgets without reading newline character
 char *read_line(char *str, int n, FILE *stream)
@@ -53,8 +51,6 @@ Userdata *print_and_scan_new_acc_messages()
 	{
 		printf(amount_of_money_str);
 		read_int(&person->money);
-		printf(succses_str);
 	}
-	printf(goodbye_str);
 	return person;
 }

@@ -6,22 +6,22 @@
 
 #define PATH_LEN 100
 #define ID_LEN 20
-#define FILE_SIZE 100
+#define FILE_SIZE 150
 char path[PATH_LEN] = "..//BankUserData//";
-
 
 static void build_path(int, char*);
 
-const char* write_format = "name: %s\nage: %d\nid: %d\nphone number: %d\naddress: %s";
+const char* write_format = "name: %s\nage: %d\nid: %d\nphone number: %d\naddress: %s\nmoney: %d";
 
 void write_data_to_file(Userdata *person)
 {
 	build_path(person->id, path);
 	FILE* userdata_file = fopen(path, "a");
 	if (userdata_file != NULL) {
-		fprintf(userdata_file, write_format, person->name, person->age, person->id, person->phone_number, person->address);
+		printf("The account was made succussfuly\n");
+		printf("Have a great day sir!\n");
+		fprintf(userdata_file, write_format, person->name, person->age, person->id, person->phone_number, person->address, person->money);
 		fclose(userdata_file);
-		printf("The account was made succussfuly!\n");
 	}
 	else
 		printf("Error: cannot open file!\n");
@@ -45,7 +45,7 @@ void show_file(int person_id)
 	if (userdata_file != NULL)
 	{
 		fseek(userdata_file, 0, SEEK_SET);
-		fread(file_desc, 1, sizeof(Userdata) + 35, userdata_file);
+		fread(file_desc, 1, FILE_SIZE, userdata_file);
 		printf("%s\n", file_desc);
 	}
 	else printf("You entered wrong id!\n");
@@ -53,7 +53,7 @@ void show_file(int person_id)
 // build path from int to string
 static void build_path(int user_id, char *path)
 {
-	char* loc_path = path;
+	//char* path_loc = path;
 	char file_name[ID_LEN] = "";
 	itoa(user_id, file_name, 10);
 	strcat(file_name, ".txt");
