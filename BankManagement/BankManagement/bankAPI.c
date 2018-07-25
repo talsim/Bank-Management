@@ -40,7 +40,15 @@ void edit()
 
 void transact()
 {
-
+	int user_id;
+	int ans;
+	printf("Please enter the account's id: ");
+	read_int(&user_id);
+	printf("If you want to deposit money type 1, if you want to withdraw money type 0: ");
+	read_int(&ans);
+	if (ans == 1) deposit_money(user_id);
+	else if(ans == 0) withdraw_money(user_id);
+	else printf("Invaild input!\n");
 }
 
 void see()

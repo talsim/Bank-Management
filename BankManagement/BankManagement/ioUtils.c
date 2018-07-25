@@ -22,7 +22,6 @@ char *read_line(char *str, int n, FILE *stream)
 	return str;
 }
 
-
 int read_int(int *num)
 {
 	scanf("%d", num);
