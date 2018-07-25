@@ -1,6 +1,5 @@
 #define _CRT_NONSTDC_NO_DEPRECATE
 #include "userdata.h"
-#include "ioUtils.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>  
@@ -11,7 +10,6 @@
 char path[PATH_LEN] = "..//BankUserData//";
 
 static void build_path(int, char*);
-static char read_file_line(int);
 
 const char* write_format = "name: %s\nage: %d\nid: %d\nphone number: %d\naddress: %s\nmoney: %d";
 
@@ -20,10 +18,10 @@ void write_data_to_file(Userdata *person)
 	build_path(person->id, path);
 	FILE* userdata_file = fopen(path, "a");
 	if (userdata_file != NULL) {
-		fprintf(userdata_file, write_format, person->name, person->age, person->id, person->phone_number, person->address, person->money);
-		fclose(userdata_file);
 		printf("The account was made succussfuly\n");
 		printf("Have a great day sir!\n");
+		fprintf(userdata_file, write_format, person->name, person->age, person->id, person->phone_number, person->address, person->money);
+		fclose(userdata_file);
 	}
 	else
 		printf("Error: cannot open file!\n");
@@ -37,20 +35,6 @@ void remove_file(int person_id)
 		printf("The user with the id %d was successfuly removed!\n", person_id);
 	else
 		printf("Error: cannot remove the user %d\n", person_id);
-}
-
-void deposit_money(int user_id)
-{
-	int money_to_deposit;
-	printf("Please enter the amount of money to deposit: ");
-	read_int(&money_to_deposit);
-	char money_line = read_file_line(user_id);
-	printf("The line is: %s\n", money_line);
-}
-
-void withdraw_money(int user_id)
-{
-
 }
 
 void show_file(int person_id)
@@ -69,37 +53,9 @@ void show_file(int person_id)
 // build path from int to string
 static void build_path(int user_id, char *path)
 {
+	//char* path_loc = path;
 	char file_name[ID_LEN] = "";
 	itoa(user_id, file_name, 10);
 	strcat(file_name, ".txt");
 	strcat(path, file_name);
-}
-
-static char read_file_line(int user_id)
-{
-	build_path(user_id, path);
-	FILE* userdata_file = fopen(path, "r+");
-
-	int lineNumber = 5; // because the money is in line 5
-	int count = 0;
-	if (userdata_file != NULL)
-	{
-		char money_line[50] = "";
-		while (read_line(money_line, sizeof(money_line), userdata_file) != NULL) /* read a line */
-		{
-			if (count == lineNumber)
-			{
-				return money_line;
-				fclose(userdata_file);
-			}
-			else
-			{
-				count++;
-			}
-		}
-	}
-	else
-	{
-		printf("Error: file does not exist!");
-	}
 }
