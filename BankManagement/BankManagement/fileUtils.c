@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>  
+#include <ctype.h>
 
 #define PATH_LEN 100
 #define ID_LEN 20
@@ -11,7 +12,8 @@
 char path[PATH_LEN] = "..//BankUserData//";
 
 static void build_path(int, char*);
-static char read_file_line(int);
+static int extract_num_from_line(char*);
+static void read_file_line(int, int, char*);
 
 const char* write_format = "name: %s\nage: %d\nid: %d\nphone number: %d\naddress: %s\nmoney: %d";
 
@@ -41,11 +43,12 @@ void remove_file(int person_id)
 
 void deposit_money(int user_id)
 {
-	int money_to_deposit;
-	printf("Please enter the amount of money to deposit: ");
-	read_int(&money_to_deposit);
-	char money_line = read_file_line(user_id);
-	printf("The line is: %s\n", money_line);
+	//int money_to_deposit;
+	//printf("Please enter the amount of money to deposit: ");
+	//read_int(&money_to_deposit);
+	char money_line_str[100] = "";
+	read_file_line(user_id, 5, money_line_str);
+	int money_num = extract_num_from_line(money_line_str);
 }
 
 void withdraw_money(int user_id)
@@ -64,7 +67,8 @@ void show_file(int person_id)
 		fread(file_desc, 1, FILE_SIZE, userdata_file);
 		printf("%s\n", file_desc);
 	}
-	else printf("You entered wrong id!\n");
+	else 
+		printf("You entered wrong id!\n");
 }
 // build path from int to string
 static void build_path(int user_id, char *path)
@@ -75,22 +79,33 @@ static void build_path(int user_id, char *path)
 	strcat(path, file_name);
 }
 
-static char read_file_line(int user_id)
+static int extract_num_from_line(char* money_val)
+{
+	while (*money_val)
+	{
+		if (isdigit(*money_val))
+		{
+			int num = atoi(money_val);
+			return num;
+		}
+		else
+			money_val++;
+	}
+}
+
+static void read_file_line(int user_id, int lineNumber, char* money_line_str)
 {
 	build_path(user_id, path);
 	FILE* userdata_file = fopen(path, "r+");
-
-	int lineNumber = 5; // because the money is in line 5
 	int count = 0;
 	if (userdata_file != NULL)
 	{
-		char money_line[50] = "";
-		while (read_line(money_line, sizeof(money_line), userdata_file) != NULL) /* read a line */
+		while (read_line(money_line_str, 100, userdata_file) != NULL) /* read a line */
 		{
 			if (count == lineNumber)
 			{
-				return money_line;
 				fclose(userdata_file);
+				return; 
 			}
 			else
 			{
@@ -103,3 +118,5 @@ static char read_file_line(int user_id)
 		printf("Error: file does not exist!");
 	}
 }
+
+
