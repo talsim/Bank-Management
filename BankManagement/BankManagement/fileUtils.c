@@ -15,7 +15,7 @@ static void build_path(int, char*);
 static int extract_num_from_line(char*);
 static void read_file_line(int, int, char*);
 
-const char* write_format = "name: %s\nage: %d\nid: %d\nphone number: %d\naddress: %s\nmoney: %d";
+const char* write_format = "%s\n%d\n%d\n%d\n%s\n%d";
 
 void struct2file(Userdata *person)
 {
