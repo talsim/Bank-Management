@@ -6,37 +6,38 @@
 #include <stdlib.h>  
 #include <ctype.h>
 
-#define PATH_LEN 100
 #define ID_LEN 20
 #define FILE_SIZE 150
-char path[PATH_LEN] = "..//BankUserData//";
 
-static void build_path(int, char*);
-static int extract_num_from_line(char*);
-static void read_file_line(int, int, char*);
+static char* build_path(int);
 
-const char* write_format = "%s\n%d\n%d\n%d\n%s\n%d";
-
-void struct2file(Userdata *person)
+int struct2file(Userdata *person)
 {
-	build_path(person->id, path);
-	FILE* userdata_file = fopen(path, "w+");
+	const char* write_format = "%s\n%d\n%d\n%d\n%s\n%d";
+	char *path = build_path(person->id);
+	FILE *userdata_file = fopen(path, "w+");
 	if (userdata_file != NULL) 
 	{
 		fprintf(userdata_file, write_format, person->name, person->age, person->id, person->phone_number, person->address, person->money);
 		fclose(userdata_file);
-		printf("The account was made succussfuly\n");
+		printf("Have a great day sir!\n");
+		return 1;
 	}
-	else
+	else 
+	{
 		printf("Error: cannot open file %d.txt!\n", person->id);
+		return 0;
+	}
+	free(path);
 }
 
-Userdata* file2struct(FILE* user_file) 
+Userdata* file2struct(char *path) 
 {
 	Userdata *ans = (Userdata*) malloc(sizeof(Userdata));
+	FILE *userdata_file = fopen(path, "r");
 	char buffer[100] = "";
 	int line_num = 0;
-	while (read_line(buffer, sizeof(buffer), user_file) != NULL) /* read a line */
+	while (read_line(buffer, sizeof(buffer), userdata_file) != NULL) /* read a line */
 	{
 		switch (line_num)
 		{
@@ -65,10 +66,9 @@ Userdata* file2struct(FILE* user_file)
 	return ans;
 }
 
-
 void remove_file(int person_id)
 {
-	build_path(person_id, path);
+	char *path = build_path(person_id);
 	int status = remove(path);
 	if (status == 0)
 		printf("The user with the id %d was successfuly removed!\n", person_id);
@@ -78,87 +78,65 @@ void remove_file(int person_id)
 
 void deposit_money(int user_id)
 {
-	int money_to_deposit;
+	int money_to_deposit = 0;
 	printf("Please enter the amount of money to deposit: ");
 	read_int(&money_to_deposit);
-	char money_line_str[100] = "";
-	read_file_line(user_id, 5, money_line_str);
-	int money_num = extract_num_from_line(money_line_str);
-	//new function: struct_to_file();
+	char *path = build_path(user_id);
+	Userdata *user_file = file2struct(path);
+	user_file->money += money_to_deposit;
+	int check = struct2file(user_file);
+	if (check == 1)
+		printf("The deposit was successful!\n");
+	else
+		printf("Error: the deposit counldn't go through!\n");
+	free(user_file);
+	free(path);
 }
 
 void withdraw_money(int user_id)
 {
-
+	int money_to_withdraw = 0;
+	printf("Please enter the amount of money to withdraw: ");
+	read_int(&money_to_withdraw);
+	char *path = build_path(user_id);
+	Userdata *user_file = file2struct(path);
+	user_file->money -= money_to_withdraw;
+	int check = struct2file(user_file);
+	if (check == 1)
+		printf("The withdraw was successful!\n");
+	else
+		printf("Error: the deposit counldn't go through!\n");
+	free(user_file);
+	free(path);
 }
 
-// TODO: support printing the struct (struct is already updated)
 void show_file(int person_id)
 {
+	const char* show_file_format = "name: %s\nage: %d\nid: %d\nphone number: %d\naddress: %s\nmoney: %d\n";
 	Userdata *user_data = NULL;
-	char file_desc[FILE_SIZE] = "";
-	build_path(person_id, path);
+	char *path = build_path(person_id);
 	FILE* userdata_file = fopen(path, "r");
 	if (userdata_file != NULL)
 	{
 		user_data = file2struct(userdata_file);
-		/*fseek(userdata_file, 0, SEEK_SET);
-		fread(file_desc, 1, FILE_SIZE, userdata_file);*/
-		printf("%s\n", user_data->name);
+		printf(show_file_format, user_data->name, user_data->age, user_data->id, user_data->phone_number, user_data->address, user_data->money);
 	}
 	else 
 		printf("You entered wrong id!\n");
-
 	free(user_data);
+	free(path);
 }
 
 // build path from int to string
-static void build_path(int user_id, char *path)
+static char* build_path(int user_id)
 {
+	char *path = (char*)malloc(100*sizeof(char));
+	strcpy(path, "..//BankUserData//");
 	char file_name[ID_LEN] = "";
 	itoa(user_id, file_name, 10);
 	strcat(file_name, ".txt");
 	strcat(path, file_name);
-}
-
-static int extract_num_from_line(char* money_val)
-{
-	while (*money_val)
-	{
-		if (isdigit(*money_val))
-		{
-			int num = atoi(money_val);
-			return num;
-		}
-		else
-			money_val++;
-	}
-}
-
-static void read_file_line(int user_id, int lineNumber, char* money_line_str)
-{
-	build_path(user_id, path);
-	FILE* userdata_file = fopen(path, "r+");
-	int count = 0;
-	if (userdata_file != NULL)
-	{
-		while (read_line(money_line_str, 100, userdata_file) != NULL) /* read a line */
-		{
-			if (count == lineNumber)
-			{
-				fclose(userdata_file);
-				return; 
-			}
-			else
-			{
-				count++;
-			}
-		}
-	}
-	else
-	{
-		printf("Error: file does not exist!");
-	}
+	return path;
 }
 
 
