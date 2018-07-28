@@ -12,7 +12,7 @@ const char* money_str = "If you want to deposit money now, type 1, else type 0: 
 const char* amount_of_money_str = "Enter the amount of money to deposit: ";
 
 // fgets without reading newline character
-char *read_line(char *str, int n, FILE *stream)
+char* read_line(char *str, int n, FILE *stream)
 {
 	char *ans = fgets(str, n, stream);
 	if (ans == NULL)
@@ -29,7 +29,7 @@ int read_int(int *num)
 	return *num;
 }
 
-Userdata *print_and_scan_new_acc_messages()
+Userdata* print_and_scan_new_acc_messages()
 {
 	Userdata *person = (Userdata*)malloc(sizeof(Userdata));
 	printf(name_str);

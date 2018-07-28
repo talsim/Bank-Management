@@ -17,18 +17,18 @@ static void read_file_line(int, int, char*);
 
 const char* write_format = "name: %s\nage: %d\nid: %d\nphone number: %d\naddress: %s\nmoney: %d";
 
-void write_data_to_file(Userdata *person)
+void struct2file(Userdata *person)
 {
 	build_path(person->id, path);
-	FILE* userdata_file = fopen(path, "a");
-	if (userdata_file != NULL) {
+	FILE* userdata_file = fopen(path, "w+");
+	if (userdata_file != NULL) 
+	{
 		fprintf(userdata_file, write_format, person->name, person->age, person->id, person->phone_number, person->address, person->money);
 		fclose(userdata_file);
 		printf("The account was made succussfuly\n");
-		printf("Have a great day sir!\n");
 	}
 	else
-		printf("Error: cannot open file!\n");
+		printf("Error: cannot open file %d.txt!\n", person->id);
 }
 
 void remove_file(int person_id)
@@ -43,12 +43,13 @@ void remove_file(int person_id)
 
 void deposit_money(int user_id)
 {
-	//int money_to_deposit;
-	//printf("Please enter the amount of money to deposit: ");
-	//read_int(&money_to_deposit);
+	int money_to_deposit;
+	printf("Please enter the amount of money to deposit: ");
+	read_int(&money_to_deposit);
 	char money_line_str[100] = "";
 	read_file_line(user_id, 5, money_line_str);
 	int money_num = extract_num_from_line(money_line_str);
+	//new function: struct_to_file();
 }
 
 void withdraw_money(int user_id)

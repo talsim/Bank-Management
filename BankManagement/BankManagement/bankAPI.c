@@ -30,7 +30,7 @@ void menu()
 void new_acc()
 {
 	Userdata *person = print_and_scan_new_acc_messages();
-	write_data_to_file(person);
+	struct2file(person);
 }
 
 void edit()
