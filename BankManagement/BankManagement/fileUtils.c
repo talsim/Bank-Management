@@ -31,6 +31,41 @@ void struct2file(Userdata *person)
 		printf("Error: cannot open file %d.txt!\n", person->id);
 }
 
+Userdata* file2struct(FILE* user_file) 
+{
+	Userdata *ans = (Userdata*) malloc(sizeof(Userdata));
+	char buffer[100] = "";
+	int line_num = 0;
+	while (read_line(buffer, sizeof(buffer), user_file) != NULL) /* read a line */
+	{
+		switch (line_num)
+		{
+			case 0: 
+				strcpy(ans->name, buffer);
+				break;
+			case 1:
+				ans->age = atoi(buffer);
+				break;
+			case 2:
+				ans->id = atoi(buffer);
+				break;
+			case 3:
+				ans->phone_number = atoi(buffer);
+				break;
+			case 4:
+				strcpy(ans->address, buffer);
+				break;
+			case 5:
+				ans->money = atoi(buffer);
+				break;
+		}
+		line_num++;
+		strcpy(buffer, "");
+	}
+	return ans;
+}
+
+
 void remove_file(int person_id)
 {
 	build_path(person_id, path);
@@ -57,20 +92,26 @@ void withdraw_money(int user_id)
 
 }
 
+// TODO: support printing the struct (struct is already updated)
 void show_file(int person_id)
 {
+	Userdata *user_data = NULL;
 	char file_desc[FILE_SIZE] = "";
 	build_path(person_id, path);
 	FILE* userdata_file = fopen(path, "r");
 	if (userdata_file != NULL)
 	{
-		fseek(userdata_file, 0, SEEK_SET);
-		fread(file_desc, 1, FILE_SIZE, userdata_file);
-		printf("%s\n", file_desc);
+		user_data = file2struct(userdata_file);
+		/*fseek(userdata_file, 0, SEEK_SET);
+		fread(file_desc, 1, FILE_SIZE, userdata_file);*/
+		printf("%s\n", user_data->name);
 	}
 	else 
 		printf("You entered wrong id!\n");
+
+	free(user_data);
 }
+
 // build path from int to string
 static void build_path(int user_id, char *path)
 {
