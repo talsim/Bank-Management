@@ -6,11 +6,10 @@
 #include <stdlib.h>  
 #include <ctype.h>
 
+static char* build_path(int);
+
 #define ID_LEN 20
 #define FILE_SIZE 150
-
-static char* build_path(int);
-static Userdata* file2struct(char*);
 
 int struct2file(Userdata *person)
 {
@@ -33,9 +32,10 @@ int struct2file(Userdata *person)
 	free(person);
 }
 
-static Userdata* file2struct(char *path) 
+Userdata* file2struct(int user_id)
 {
 	Userdata *ans = (Userdata*) malloc(sizeof(Userdata));
+	char *path = build_path(user_id);
 	FILE *userdata_file = fopen(path, "r");
 	if (userdata_file == NULL)
 	{
@@ -70,6 +70,7 @@ static Userdata* file2struct(char *path)
 		line_num++;
 		strcpy(buffer, "");
 	}
+	free(path);
 	return ans;
 }
 
@@ -83,40 +84,6 @@ void remove_file(int person_id)
 		printf("Error: cannot remove the user %d\n", person_id);
 }
 
-void deposit_money(int user_id)
-{
-	int money_to_deposit = 0;
-	printf("Please enter the amount of money to deposit: ");
-	read_int(&money_to_deposit);
-	char *path = build_path(user_id);
-	Userdata *user_file = file2struct(path);
-	user_file->money += money_to_deposit;
-	int check = struct2file(user_file);
-	if (check == 1)
-		printf("The deposit was successful!\n");
-	else
-		printf("Error: the deposit counldn't go through!\n");
-	free(user_file);
-	free(path);
-}
-
-void withdraw_money(int user_id)
-{
-	int money_to_withdraw = 0;
-	printf("Please enter the amount of money to withdraw: ");
-	read_int(&money_to_withdraw);
-	char *path = build_path(user_id);
-	Userdata *user_file = file2struct(path);
-	user_file->money -= money_to_withdraw;
-	int check = struct2file(user_file);
-	if (check == 1)
-		printf("The withdraw was successful!\n");
-	else
-		printf("Error: the withdraw counldn't go through!\n");
-	free(user_file);
-	free(path);
-}
-
 void show_file(int person_id)
 {
 	const char* show_file_format = "name: %s\nage: %d\nid: %d\nphone number: %d\naddress: %s\nmoney: %d\n";
@@ -125,32 +92,16 @@ void show_file(int person_id)
 	FILE* userdata_file = fopen(path, "r");
 	if (userdata_file != NULL)
 	{
-		user_data = file2struct(path); 
+		user_data = file2struct(person_id);
 		printf(show_file_format, user_data->name, user_data->age, user_data->id, user_data->phone_number, user_data->address, user_data->money);
 	}
 	else 
 		printf("You entered wrong id!\n");
 	free(user_data);
-	free(path);
-}
-
-void edit_user_data(int user_id)
-{
-	char *path = build_path(user_id);
-	Userdata *user_data = file2struct(path);
-	show_file(user_id);
-	printf("\n\n\n\n");
-	printf("phone number: ");
-	read_int(&user_data->phone_number);
-	printf("address: ");
-	read_line(user_data->address, strlen(user_data->address), stdin);
-	struct2file(user_data);
-	free(path);
-	free(user_data);
 }
 
 // build path for fopen location
-static char* build_path(int user_id)
+char* build_path(int user_id)
 {
 	char *path = (char*)malloc(100*sizeof(char));
 	strcpy(path, "..//BankUserData//");

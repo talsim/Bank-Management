@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "bankAPI.h"
 #include "ioUtils.h"
 

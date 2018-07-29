@@ -51,5 +51,13 @@ Userdata* print_and_scan_new_acc_messages()
 		printf(amount_of_money_str);
 		read_int(&person->money);
 	}
+	else if (ans == 0)
+	{
+	}
+	else
+	{
+		printf("Invaild input!\n");
+		exit(1);
+	}
 	return person;
 }

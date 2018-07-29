@@ -4,4 +4,6 @@ void edit();
 void transact();
 void see();
 void erase();
-void quit();
+static void deposit_money(int);
+static void withdraw_money(int);
+static void edit_user_data(int);

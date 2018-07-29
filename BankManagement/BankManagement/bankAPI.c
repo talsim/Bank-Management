@@ -50,7 +50,7 @@ void transact()
 	printf("If you want to deposit money type 1, if you want to withdraw money type 0: ");
 	read_int(&ans);
 	if (ans == 1) deposit_money(user_id);
-	else if(ans == 0) withdraw_money(user_id);
+	else if (ans == 0) withdraw_money(user_id);
 	else printf("Invaild input!\n");
 }
 
@@ -68,4 +68,47 @@ void erase()
 	printf("Please enter your id: ");
 	read_int(&user_id);
 	remove_file(user_id);
+}
+
+static void edit_user_data(int user_id)
+{
+	Userdata *user_data = file2struct(user_id);
+	show_file(user_id);
+	printf("\n\n\n\n");
+	printf("phone number: ");
+	read_int(&user_data->phone_number);
+	printf("address: ");
+	read_line(user_data->address, strlen(user_data->address), stdin);
+	struct2file(user_data);
+	free(user_data);
+}
+
+static void withdraw_money(int user_id)
+{
+	int money_to_withdraw = 0;
+	printf("Please enter the amount of money to withdraw: ");
+	read_int(&money_to_withdraw);
+	Userdata *user_file = file2struct(user_id);
+	user_file->money -= money_to_withdraw;
+	int check = struct2file(user_file);
+	if (check == 1)
+		printf("The withdraw was successful!\n");
+	else
+		printf("Error: the withdraw counldn't go through!\n");
+	free(user_file);
+}
+
+static void deposit_money(int user_id)
+{
+	int money_to_deposit = 0;
+	printf("Please enter the amount of money to deposit: ");
+	read_int(&money_to_deposit);
+	Userdata *user_file = file2struct(user_id);
+	user_file->money += money_to_deposit;
+	int check = struct2file(user_file);
+	if (check == 1)
+		printf("The deposit was successful!\n");
+	else
+		printf("Error: the deposit counldn't go through!\n");
+	free(user_file);
 }
