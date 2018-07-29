@@ -35,7 +35,10 @@ void new_acc()
 
 void edit()
 {
-
+	int user_id;
+	printf("Please enter the account's id: ");
+	read_int(&user_id);
+	edit_user_data(user_id);
 }
 
 void transact()
@@ -65,9 +68,4 @@ void erase()
 	printf("Please enter your id: ");
 	read_int(&user_id);
 	remove_file(user_id);
-}
-
-void quit()
-{
-	exit(0);
 }

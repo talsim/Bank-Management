@@ -10,6 +10,7 @@
 #define FILE_SIZE 150
 
 static char* build_path(int);
+static Userdata* file2struct(char*);
 
 int struct2file(Userdata *person)
 {
@@ -29,12 +30,18 @@ int struct2file(Userdata *person)
 		return 0;
 	}
 	free(path);
+	free(person);
 }
 
-Userdata* file2struct(char *path) 
+static Userdata* file2struct(char *path) 
 {
 	Userdata *ans = (Userdata*) malloc(sizeof(Userdata));
 	FILE *userdata_file = fopen(path, "r");
+	if (userdata_file == NULL)
+	{
+		printf("Error: the id doesn't exist!\n");
+		exit(0);
+	}
 	char buffer[100] = "";
 	int line_num = 0;
 	while (read_line(buffer, sizeof(buffer), userdata_file) != NULL) /* read a line */
@@ -105,7 +112,7 @@ void withdraw_money(int user_id)
 	if (check == 1)
 		printf("The withdraw was successful!\n");
 	else
-		printf("Error: the deposit counldn't go through!\n");
+		printf("Error: the withdraw counldn't go through!\n");
 	free(user_file);
 	free(path);
 }
@@ -118,7 +125,7 @@ void show_file(int person_id)
 	FILE* userdata_file = fopen(path, "r");
 	if (userdata_file != NULL)
 	{
-		user_data = file2struct(userdata_file);
+		user_data = file2struct(path); 
 		printf(show_file_format, user_data->name, user_data->age, user_data->id, user_data->phone_number, user_data->address, user_data->money);
 	}
 	else 
@@ -127,7 +134,22 @@ void show_file(int person_id)
 	free(path);
 }
 
-// build path from int to string
+void edit_user_data(int user_id)
+{
+	char *path = build_path(user_id);
+	Userdata *user_data = file2struct(path);
+	show_file(user_id);
+	printf("\n\n\n\n");
+	printf("phone number: ");
+	read_int(&user_data->phone_number);
+	printf("address: ");
+	read_line(user_data->address, strlen(user_data->address), stdin);
+	struct2file(user_data);
+	free(path);
+	free(user_data);
+}
+
+// build path for fopen location
 static char* build_path(int user_id)
 {
 	char *path = (char*)malloc(100*sizeof(char));
@@ -138,5 +160,3 @@ static char* build_path(int user_id)
 	strcat(path, file_name);
 	return path;
 }
-
-
