@@ -46,7 +46,7 @@ static void exec_option(int option)
 		erase();
 		break;
 	case 6:
-		quit();
+		exit(0);
 		break;
 	default:
 		printf("%s\n%s\n", invaild_input_str, again_str);

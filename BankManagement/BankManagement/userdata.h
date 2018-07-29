@@ -4,10 +4,10 @@
 typedef struct
 {
 	char name[20];
-	int money;
-	int id;
-	int age;
-	int phone_number;
+	unsigned int money;
+	unsigned int id;
+	unsigned int age;
+	unsigned int phone_number;
 	char address[20];
 } Userdata;
 
