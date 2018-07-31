@@ -57,7 +57,7 @@ Userdata* print_and_scan_new_acc_messages()
 	else
 	{
 		printf("Invaild input!\n");
-		exit(1);
+		exit(0);
 	}
 	return person;
 }
