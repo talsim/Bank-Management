@@ -15,6 +15,15 @@ const char* erase_str = "Removing existing account";
 const char* quit_str = "Exit";
 const char* welcome_str = "Welcome to the main menu";
 
+typedef int(*op)(int, int);
+
+int plus(int x, int y) {
+	return x + y;
+}
+
+int minus(int x, int y) {
+	return x - y;
+}
 
 void menu()
 {
@@ -85,51 +94,26 @@ static void edit_user_data(int user_id)
 
 static void withdraw_money(int user_id)
 {
-	choose_op(0, user_id);
+	choose_op(minus, user_id);
 
 }
 
 static void deposit_money(int user_id)
 {
-	choose_op(1, user_id);
+	choose_op(plus, user_id);
 }
 
-static void choose_op(int op, int user_id)
+static void choose_op(op operation, int user_id) // operation is plus or minus
 {
-	if (op == 1) // op 1 = deposit_money
-	{
-		int money_to_deposit = 0;
-		printf("Please enter the amount of money to deposit: ");
-		read_int(&money_to_deposit);
-		Userdata *user_file = file2struct(user_id);
-		user_file->money += money_to_deposit;
-		int check = struct2file(user_file);
-		if (check == 1)
-			printf("The deposit was successful!\n");
-		else
-			printf("Error: the deposit counldn't go through!\n");
-		free(user_file);
-	}
-	else if (op == 0) // op 0 = withdraw_money
-	{
-		int money_to_withdraw = 0;
-		printf("Please enter the amount of money to withdraw: ");
-		read_int(&money_to_withdraw);
-		Userdata *user_file = file2struct(user_id);
-		if (money_to_withdraw > user_file->money)
-		{
-			printf("Error: you dont have enough money!\n");
-			exit(1);
-		}
-		else
-		{
-			user_file->money -= money_to_withdraw;
-			int check = struct2file(user_file);
-			if (check == 1)
-				printf("The withdraw was successful!\n");
-			else
-				printf("Error: the withdraw counldn't go through!\n");
-			free(user_file);
-		}
-	}
+	int money_to_deposit = 0;
+	printf("Please enter the amount of money to deposit: ");
+	read_int(&money_to_deposit);
+	Userdata *user_file = file2struct(user_id);
+	user_file->money = operation(user_file->money, money_to_deposit);
+	int check = struct2file(user_file);
+	if (check == 1)
+		printf("The deposit was successful!\n");
+	else
+		printf("Error: the deposit counldn't go through!\n");
+	free(user_file);
 }
