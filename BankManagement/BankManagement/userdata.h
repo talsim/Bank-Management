@@ -7,7 +7,7 @@ typedef struct
 	int money;
 	int id;
 	int age;
-	int phone_number;
+	char phone_number[20];
 	char address[20];
 } Userdata;
 

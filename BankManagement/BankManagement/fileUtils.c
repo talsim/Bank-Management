@@ -13,7 +13,7 @@ static char* build_path(int);
 
 int struct2file(Userdata *person)
 {
-	const char* write_format = "%s\n%d\n%d\n%d\n%s\n%d";
+	const char* write_format = "%s\n%d\n%d\n%s\n%s\n%d";
 	char *path = build_path(person->id);
 	FILE *userdata_file = fopen(path, "w+");
 	if (userdata_file != NULL) 
@@ -58,7 +58,7 @@ Userdata* file2struct(int user_id)
 				ans->id = atoi(buffer);
 				break;
 			case 3:
-				ans->phone_number = atoi(buffer);
+				strcpy(ans->phone_number, buffer);
 				break;
 			case 4:
 				strcpy(ans->address, buffer);

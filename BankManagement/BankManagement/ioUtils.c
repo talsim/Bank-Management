@@ -25,7 +25,7 @@ char* read_line(char *str, int n, FILE *stream)
 int read_int(int *num)
 {
 	scanf("%d", num);
-	char c = getchar(); // remove newline from stdin
+	getchar(); // remove newline from stdin
 	return *num;
 }
 
@@ -39,7 +39,7 @@ Userdata* print_and_scan_new_acc_messages()
 	printf(id_str);
 	read_int(&person->id);
 	printf(phone_number_str);
-	read_int(&person->phone_number);
+	read_line(person->phone_number, strlen(person->phone_number), stdin);
 	printf(address_str);
 	read_line(person->address, strlen(person->address), stdin);
 	printf(money_str);
