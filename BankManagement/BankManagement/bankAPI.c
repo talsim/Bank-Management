@@ -6,6 +6,13 @@
 #include "fileUtils.h"
 #include "ioUtils.h"
 
+typedef int(*op)(int, int);
+
+static void deposit_money(int);
+static void withdraw_money(int);
+static void edit_user_data(int);
+static void choose_op(op, int);
+
 // menu messages
 const char* new_acc_str = "Create new account";
 const char* edit_str = "Upadate information of existing account";
@@ -15,7 +22,6 @@ const char* erase_str = "Removing existing account";
 const char* quit_str = "Exit";
 const char* welcome_str = "Welcome to the main menu";
 
-typedef int(*op)(int, int);
 
 int plus(int x, int y) {
 	return x + y;
