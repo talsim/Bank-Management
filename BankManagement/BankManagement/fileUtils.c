@@ -104,7 +104,7 @@ void show_file(int person_id)
 char* build_path(int user_id)
 {
 	char *path = (char*)malloc(100*sizeof(char));
-	strcpy(path, "..//BankUserData//");
+	strcpy(path, "");
 	char file_name[ID_LEN] = "";
 	itoa(user_id, file_name, 10);
 	strcat(file_name, ".txt");
